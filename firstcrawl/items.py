@@ -9,30 +9,29 @@ import scrapy
 
 
 class JobItem(scrapy.Item):
-	# job info
-	position_name = scrapy.Field()
-	salary = scrapy.Field()
-	location = scrapy.Field()
-	release_date = scrapy.Field()
-	jd = scrapy.Field()
-	work_time = scrapy.Field()
-	releaser = scrapy.Field()
+    # job info
+    position_name = scrapy.Field()
+    salary = scrapy.Field()
+    location = scrapy.Field()
+    release_date = scrapy.Field()
+    jd = scrapy.Field()
+    work_time = scrapy.Field()
+    releaser = scrapy.Field()
 
-	# job prerequisite
-	experience = scrapy.Field()
-	degree = scrapy.Field()
+    # job prerequisite
+    experience = scrapy.Field()
+    degree = scrapy.Field()
 
-	# job benefits
-	benefit_info = scrapy.Field()
+    # job benefits
+    benefit_info = scrapy.Field()
 
-	# company info
-	company = scrapy.Field()
-	company_website = scrapy.Field()
-	company_stage = scrapy.Field()
-	company_domain = scrapy.Field()
-	company_member = scrapy.Field()
-	company_address = scrapy.Field()
+    # company info
+    company = scrapy.Field()
+    company_website = scrapy.Field()
+    company_stage = scrapy.Field()
+    company_domain = scrapy.Field()
+    company_member = scrapy.Field()
+    company_address = scrapy.Field()
 
-	# job source
-	source_url = scrapy.Field()
-
+    # job source
+    source_url = scrapy.Field()

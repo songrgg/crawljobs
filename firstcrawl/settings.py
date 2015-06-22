@@ -61,9 +61,9 @@ NEWSPIDER_MODULE = 'firstcrawl.spiders'
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'firstcrawl.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'firstcrawl.pipelines.mongodb.SingleMongodbPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -83,3 +83,8 @@ NEWSPIDER_MODULE = 'firstcrawl.spiders'
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.contrib.httpcache.FilesystemCacheStorage'
+
+# SingleMongoDBPipeline settings
+MONGO_URI = "localhost"
+MONGO_PORT = 27017
+MONGO_DB = "job"
