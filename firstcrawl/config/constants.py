@@ -10,5 +10,6 @@ class JobSources(object):
         NEITU: 'neitui'
     }
 
-    def parse(self, source):
-        return self.MAPPING.get(source)
+    @classmethod
+    def parse(cls, source):
+        return cls.MAPPING.get(source)

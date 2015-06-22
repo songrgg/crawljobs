@@ -16,19 +16,22 @@ class LagouJobSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        return [scrapy.http.FormRequest(
+        init_request = scrapy.http.FormRequest(
             url=self.start_urls[0],
             formdata={
                 'pn':'1',
                 'first':'false',
                 'kd':''
             },
-            callback=self.parse)]
+            callback=self.parse)
+
+        init_request.meta['pageNo'] = 1
+        return [init_request]
 
     def parse(self, response):
         url = response.url
 
-        if (url == 'http://www.lagou.com/jobs/positionAjax.json?px=new'):
+        if (url == self.start_urls[0]):
             # process json API
             jsonArr = json.loads(response.body_as_unicode())
             detail_urls = self.processJson(jsonArr)
@@ -38,12 +41,10 @@ class LagouJobSpider(scrapy.Spider):
                 request.meta['position'] = detail_url.get('position')
                 yield request
 
-            if ('content' in jsonArr and
-                'hasNextPage' in jsonArr['content'] and
-                'pageNo' in jsonArr['content']):
-                next_page = jsonArr['content']['pageNo'] + 1
+            if ('content' in jsonArr):
+                next_page = response.meta['pageNo'] + 1
                 self.log('next page: ' + str(next_page))
-                yield scrapy.http.FormRequest(
+                next_request = scrapy.http.FormRequest(
                     url=self.start_urls[0],
                     formdata={
                         'pn': str(next_page),
@@ -51,7 +52,12 @@ class LagouJobSpider(scrapy.Spider):
                         'kd': ''
                     },
                     callback=self.parse)
-        yield None
+
+                next_request.meta['pageNo'] = next_page
+
+                yield next_request
+            else:
+                self.log('No more jobs~~')
 
     # process the json object from `http://www.lagou.com/jobs/positionAjax.json?px=new`
     def processJson(self, json):

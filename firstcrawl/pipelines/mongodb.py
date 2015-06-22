@@ -46,15 +46,11 @@ class SingleMongodbPipeline(object):
         result = False
         if (cursor.count() > 0):
             # update this record
-            result = self.db['job_info'].update_one({condition, {"$set": item}})
-            if (result.matched_count == 1):
-                log.msg("update %d from %s successfully" %
-                        (job_id, JobSources.parse(from_which)),
-                        level=log.DEBUG, spider=spider)
-            else:
-                log.msg("update %d from %s failure" %
-                        (job_id, JobSources.parse(from_which)),
-                        level=log.ERROR, spider=spider)
+            self.db['job_info'].delete_many(condition)
+            result = self.db['job_info'].insert_one(item)
+            log.msg("update %d from %s successfully" %
+                    (job_id, JobSources.parse(from_which)),
+                    level=log.DEBUG, spider=spider)
         else:
             # insert new record into db
             result = self.db['job_info'].insert_one(item)

@@ -88,3 +88,7 @@ ITEM_PIPELINES = {
 MONGO_URI = "localhost"
 MONGO_PORT = 27017
 MONGO_DB = "job"
+
+# Add a custom filter passing the json-API url
+DUPEFILTER_CLASS ='firstcrawl.config.filter.CustomURLFilter'
+
