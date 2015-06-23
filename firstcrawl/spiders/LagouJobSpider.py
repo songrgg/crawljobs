@@ -1,6 +1,7 @@
 import scrapy
 import json
 import re
+from firstcrawl import items
 from firstcrawl.config import constants
 
 class LagouJobSpider(scrapy.Spider):
@@ -154,8 +155,18 @@ class LagouJobSpider(scrapy.Spider):
     def processDetail(self, response):
         self.log('---start job detail: ' + response.url)
         position = response.meta['position']
-        job_description = response.xpath('//dd[@class="job_bt"]').extract()
-        position['jd'] = job_description
-        position['from_which'] = constants.JobSources.LAGOU
+        jobDescription = response.xpath('//dd[@class="job_bt"]').extract()
+        position['website'] = response.xpath('//dl[@class="job_company"]/dd/ul/li/a/text()').extract()
+        position['originUrl'] = response.url
+        position['fromWhich'] = constants.JobSources.LAGOU
+        position['jobDescription'] = jobDescription
+
+        # transfer the dict to the JobItem
+        item = items.JobItem() 
+        for key in position:
+            try:
+                item[key] = position[key]
+            except KeyError, e:
+                pass
         self.log('---end job detail: ' + response.url)
-        return position
+        return item

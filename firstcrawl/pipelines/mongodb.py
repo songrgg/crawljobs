@@ -38,22 +38,31 @@ class SingleMongodbPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        job_id = item.get('positionId')
-        from_which = item.get('from_which')
+        mongoItem = dict()
+        for key in item.keys():
+            mongoItem[key] = item[key]
+        positionId = mongoItem.get('positionId')
+        fromWhich = mongoItem.get('fromWhich')
 
-        condition = {'positionId': job_id, 'from_which': from_which}
+        condition = {'positionId': positionId, 'fromWhich': fromWhich}
         cursor = self.db['job_info'].find(condition)
         result = False
         if (cursor.count() > 0):
             # update this record
-            self.db['job_info'].delete_many(condition)
-            result = self.db['job_info'].insert_one(item)
-            log.msg("update %d from %s successfully" %
-                    (job_id, JobSources.parse(from_which)),
-                    level=log.DEBUG, spider=spider)
+            # self.db['job_info'].delete_many(condition)
+            # result = self.db['job_info'].insert_one(item)
+            self.db['job_info'].update_one(
+                condition,
+                {
+                    '$set': mongoItem
+                }
+            )
+            # log.msg("update %d from %s successfully" %
+            #         (positionId, fromWhich),
+            #         level=log.DEBUG, spider=spider)
         else:
             # insert new record into db
-            result = self.db['job_info'].insert_one(item)
+            result = self.db['job_info'].insert_one(mongoItem)
             log.msg("Item %s wrote to MongoDB database %s/job_info" %
                     (result, self.MONGO_DB),
                     level=log.DEBUG, spider=spider)
