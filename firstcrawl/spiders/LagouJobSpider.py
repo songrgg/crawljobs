@@ -156,10 +156,12 @@ class LagouJobSpider(scrapy.Spider):
         self.log('---start job detail: ' + response.url)
         position = response.meta['position']
         jobDescription = response.xpath('//dd[@class="job_bt"]').extract()
-        position['website'] = response.xpath('//dl[@class="job_company"]/dd/ul/li/a/text()').extract()
+        website = response.xpath('//dl[@class="job_company"]/dd/ul/li/a/text()').extract()
+
+        position['website'] = ','.join(website)
         position['originUrl'] = response.url
         position['fromWhich'] = constants.JobSources.LAGOU
-        position['jobDescription'] = jobDescription
+        position['jobDescription'] = ','.join(jobDescription)
 
         # transfer the dict to the JobItem
         item = items.JobItem() 
