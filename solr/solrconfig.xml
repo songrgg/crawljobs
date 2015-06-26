@@ -782,8 +782,8 @@
 
     -->
 
-    <!-- LukeHandler -->
-    <requestHandler name="/admin/luke" class="org.apache.solr.handler.admin.LukeRequestHandler" />
+  <!-- LukeHandler -->
+  <requestHandler name="/admin/luke" class="org.apache.solr.handler.admin.LukeRequestHandler" />
 
   <!-- SearchHandler
 

@@ -116,14 +116,39 @@
   WARNING: The _text_ catch-all field will significantly increase your index size.
            If you don't need it, consider removing it and the corresponding copyField directive.
       -->
-    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="_id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
     <field name="_version_" type="long" indexed="true" stored="true"/>
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
     <field name="_ts" type="long" indexed="true" stored="true"/>
     <field name="ns" type="string" indexed="true" stored="true"/>
     <copyField source="*" dest="_text_"/>
 
+	<!-- job description -->
+	<field name="city" type="string" indexed="true" stored="true"></field>
+	<field name="companyLabelList" type="string" indexed="false" stored="true"></field>
+	<field name="companyLogo" type="string" indexed="false" stored="true"></field>
+	<field name="companyName" type="string" indexed="true" stored="true"></field>
+	<field name="companySize" type="string" indexed="false" stored="true"></field>
+	<field name="industryField" type="string" indexed="true" stored="true"></field>
+	<field name="financeStage" type="string" indexed="true" stored="true"></field>
+	<field name="website" type="string" indexed="false" stored="true"></field>
 
+	<field name="salary" type="string" indexed="true" stored="true"></field>
+	<field name="jobNature" type="string" indexed="true" stored="true"></field>
+	<field name="createTime" type="string" indexed="false" stored="true"></field>
+	<field name="positionName" type="string" indexed="true" stored="true"></field>
+	<field name="positionType" type="string" indexed="true" stored="true"></field>
+	<field name="positionAdvantage" type="string" indexed="true" stored="true"></field>
+	<field name="positionFirstType" type="string" indexed="true" stored="true"></field>
+	<field name="jobDescription" type="string" indexed="true" stored="true"></field>
+	<field name="workTime" type="string" indexed="true" stored="true"></field>
+
+	<field name="education" type="string" indexed="true" stored="true"></field>
+	<field name="workYear" type="string" indexed="true" stored="true"></field>
+
+	<field name="positionId" type="long" indexed="false" stored="true"></field>
+	<field name="originUrl" type="string" indexed="true" stored="true"></field>
+	<field name="fromWhich" type="string" indexed="true" stored="true"></field>
     <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names. 
        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
@@ -186,7 +211,7 @@
   <!-- Field to use to determine and enforce document uniqueness. 
       Unless this field is marked with required="false", it will be a required field
    -->
-  <uniqueKey>id</uniqueKey>
+  <uniqueKey>_id</uniqueKey>
 
   <!-- copyField commands copy one field to another at the time a document
        is added to the index.  It's used either to index the same field differently,
