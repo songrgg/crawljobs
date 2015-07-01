@@ -124,31 +124,31 @@
     <copyField source="*" dest="_text_"/>
 
 	<!-- job description -->
-	<field name="city" type="string" indexed="true" stored="true"></field>
-	<field name="companyLabelList" type="string" indexed="false" stored="true"></field>
+	<field name="city" type="text_smartcn" indexed="true" stored="true"></field>
+	<field name="companyLabelList" type="text_smartcn" indexed="false" stored="true"></field>
 	<field name="companyLogo" type="string" indexed="false" stored="true"></field>
-	<field name="companyName" type="string" indexed="true" stored="true"></field>
+	<field name="companyName" type="text_smartcn" indexed="true" stored="true"></field>
 	<field name="companySize" type="string" indexed="false" stored="true"></field>
-	<field name="industryField" type="string" indexed="true" stored="true"></field>
-	<field name="financeStage" type="string" indexed="true" stored="true"></field>
+	<field name="industryField" type="text_smartcn" indexed="true" stored="true"></field>
+	<field name="financeStage" type="text_smartcn" indexed="true" stored="true"></field>
 	<field name="website" type="string" indexed="false" stored="true"></field>
 
 	<field name="salary" type="string" indexed="true" stored="true"></field>
-	<field name="jobNature" type="string" indexed="true" stored="true"></field>
+	<field name="jobNature" type="text_smartcn" indexed="true" stored="true"></field>
 	<field name="createTime" type="string" indexed="false" stored="true"></field>
-	<field name="positionName" type="string" indexed="true" stored="true"></field>
-	<field name="positionType" type="string" indexed="true" stored="true"></field>
-	<field name="positionAdvantage" type="string" indexed="true" stored="true"></field>
-	<field name="positionFirstType" type="string" indexed="true" stored="true"></field>
-	<field name="jobDescription" type="string" indexed="true" stored="true"></field>
+	<field name="positionName" type="text_smartcn" indexed="true" stored="true"></field>
+	<field name="positionType" type="text_smartcn" indexed="true" stored="true"></field>
+	<field name="positionAdvantage" type="text_smartcn" indexed="true" stored="true"></field>
+	<field name="positionFirstType" type="text_smartcn" indexed="true" stored="true"></field>
+	<field name="jobDescription" type="text_smartcn" indexed="true" stored="true"></field>
 	<field name="workTime" type="string" indexed="true" stored="true"></field>
 
-	<field name="education" type="string" indexed="true" stored="true"></field>
+	<field name="education" type="text_smartcn" indexed="true" stored="true"></field>
 	<field name="workYear" type="string" indexed="true" stored="true"></field>
 
 	<field name="positionId" type="long" indexed="false" stored="true"></field>
 	<field name="originUrl" type="string" indexed="true" stored="true"></field>
-	<field name="fromWhich" type="string" indexed="true" stored="true"></field>
+	<field name="fromWhich" type="text_smartcn" indexed="true" stored="true"></field>
     <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names. 
        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
@@ -1045,6 +1045,19 @@
         <filter class="solr.TurkishLowerCaseFilterFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="false" words="lang/stopwords_tr.txt" />
         <filter class="solr.SnowballPorterFilterFactory" language="Turkish"/>
+      </analyzer>
+    </fieldType>
+
+    <!-- Add smart chinese tokenizer -->
+    <fieldType name="text_smartcn" class="solr.TextField" positionIncrementGap="0">
+      <analyzer type="index">
+        <tokenizer class="org.apache.lucene.analysis.cn.smart.SmartChineseSentenceTokenizerFactory" />
+
+        <filter class="org.apache.lucene.analysis.cn.smart.SmartChineseWordTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="org.apache.lucene.analysis.cn.smart.SmartChineseSentenceTokenizerFactory"/>
+        <filter class="org.apache.lucene.analysis.cn.smart.SmartChineseWordTokenFilterFactory"/>
       </analyzer>
     </fieldType>
 
