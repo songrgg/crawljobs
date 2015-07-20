@@ -62,7 +62,8 @@ NEWSPIDER_MODULE = 'crawljobs.spiders'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'crawljobs.pipelines.mongodb.SingleMongodbPipeline': 300,
+   # 'crawljobs.pipelines.mongodb.SingleMongodbPipeline': 300,
+   'crawljobs.pipelines.mysql.MySQLPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -87,7 +88,12 @@ ITEM_PIPELINES = {
 # SingleMongoDBPipeline settings
 MONGO_URI = "localhost"
 MONGO_PORT = 27017
-MONGO_DB = "job"
+MONGO_DB = "jobs"
+
+# MySQLPipeline settings
+MYSQL_URI = "yongwuapi_mysql_1"
+MYSQL_PORT = 3306
+MYSQL_DB = "jobs"
 
 # Add a custom filter passing the json-API url
 DUPEFILTER_CLASS ='crawljobs.config.filter.CustomURLFilter'
