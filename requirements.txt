@@ -1,0 +1,5 @@
+scrapy
+sqlalchemy
+pymysql
+pymongo
+simplejson

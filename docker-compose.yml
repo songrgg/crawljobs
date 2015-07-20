@@ -1,0 +1,7 @@
+scrapy:
+  build: .
+  command: scrapy crawl lagou
+  volumes:
+    - .:/usr/src/app
+  external_links:
+    - yongwuapi_mysql_1
