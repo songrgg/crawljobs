@@ -93,7 +93,9 @@ MONGO_DB = "jobs"
 # MySQLPipeline settings
 MYSQL_URI = "yongwuapi_mysql_1"
 MYSQL_PORT = 3306
-MYSQL_DB = "jobs"
+MYSQL_DB = "yongwu"
+MYSQL_USER = "root"
+MYSQL_PASSWD = "yongwu"
 
 # Add a custom filter passing the json-API url
 DUPEFILTER_CLASS ='crawljobs.config.filter.CustomURLFilter'
