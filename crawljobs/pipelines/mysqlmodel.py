@@ -11,25 +11,24 @@ import datetime
 DBSession = scoped_session(sessionmaker())
 Base = declarative_base()
 
-
 class JobModel(Base):
     __tablename__ = 'jobs'
     id = Column(Integer, primary_key=True)
 
     city = Column(String(20), nullable=False)
-    companyLogo = Column(String(30))
-    companySize = Column(Integer)
+    companyLogo = Column(String(100))
+    companySize = Column(String(30))
     companyName = Column(String(30), nullable=False)
     industryField = Column(String(30))
     financeStage = Column(String(30))
     website = Column(String(30))
 
-    salary = Column(Integer, nullable=False)
+    salary = Column(String(30), nullable=False)
     jobNature = Column(String(50))
     createTime = Column(DateTime, default=datetime.datetime.now, nullable=False)
     positionName = Column(String(30), nullable=False)
     positionType = Column(String(30))
-    positionAdvantage = Column(String(30))
+    positionAdvantage = Column(Text)
     positionFirstType = Column(String(30))
     jobDescription = Column(Text)
     workTime = Column(String(30))
@@ -37,7 +36,6 @@ class JobModel(Base):
     minWorkYear = Column(Integer, nullable=False)
     maxWorkYear = Column(Integer, nullable=False)
     education = Column(String(20))
-
     positionId = Column(Integer)
-    originUrl = Column(String(30))
+    originUrl = Column(String(50))
     fromWhich = Column(String(30))
