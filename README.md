@@ -6,3 +6,8 @@ These job data is used for the ``yongwu.org``, and ElasticSearch is based on the
 
 # Storage
 There is some methods of data storage like MySQL, MongoDB.
+
+# Start to crawl jobs
+$``git clone https://github.com/songrgg/crawljobs.git``
+$``cd crawljobs``
+$``docker-compose up -d scrapy``

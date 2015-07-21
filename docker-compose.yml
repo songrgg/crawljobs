@@ -1,5 +1,6 @@
 scrapy:
   build: .
+  # command: /bin/bash -c "while true; do echo hello; sleep 1; done"
   command: scrapy crawl lagou
   volumes:
     - .:/usr/src/app
