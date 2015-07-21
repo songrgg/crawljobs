@@ -15,13 +15,13 @@ class JobModel(Base):
     __tablename__ = 'jobs'
     id = Column(Integer, primary_key=True)
 
-    city = Column(String(20), nullable=False)
-    companyLogo = Column(String(100))
+    city = Column(String(100), nullable=False)
+    companyLogo = Column(String(150))
     companySize = Column(String(30))
     companyName = Column(String(30), nullable=False)
     industryField = Column(String(30))
     financeStage = Column(String(30))
-    website = Column(String(30))
+    website = Column(String(50))
 
     salary = Column(String(30), nullable=False)
     jobNature = Column(String(50))
@@ -37,5 +37,5 @@ class JobModel(Base):
     maxWorkYear = Column(Integer, nullable=False)
     education = Column(String(20))
     positionId = Column(Integer)
-    originUrl = Column(String(50))
+    originUrl = Column(String(100))
     fromWhich = Column(String(30))
