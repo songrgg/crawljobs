@@ -18,8 +18,12 @@ class NeituiSpider(scrapy.Spider):
     ]
 
     cur_page = 1
+    max_page = 135
 
     def parse(self, response):
+        if self.cur_page >= self.max_page:
+            yield None
+
         job_links = response.xpath('//div[@class="jobnote-l"]/a/@href').extract()
 
         for job_link in job_links:
@@ -47,7 +51,12 @@ class NeituiSpider(scrapy.Spider):
         # position part
         salary            = response.xpath('//span[@class="padding-r10 pay"]/text()').extract()[0] # salary
         jobNature         = '' # job nature
-        createTime        = '1991-07-25' # creat time
+
+        jobnote = response.xpath('//div[@class="jobnote"]').extract()
+        jobnote1 = jobnote[0].replace('\r\n', '')
+        month = re.match(r".*(\d\d).*(\d\d).*", jobnote1).group(1)
+        day = re.match(r".*(\d\d).*(\d\d).*", jobnote1).group(2)
+        createTime        = '%s-%s-%s' % (datetime.datetime.now().year, month, day) # creat time
         positionName      = response.xpath('//div[@class="jobnote"]/strong/text()').extract()[0]  # position name
         positionType      = '' # position type
 
