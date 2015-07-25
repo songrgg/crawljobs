@@ -1,5 +1,4 @@
-#!/usr/bin/python
-#-*-coding:utf-8-*-
+# coding: utf-8
 
 import re
 import sys
@@ -7,16 +6,20 @@ import json
 from scrapy import log
 from sqlalchemy import and_
 from sqlalchemy.engine import create_engine
-from crawljobs.config.constants import JobSources
-
 from .mysqlmodel import DBSession, Base, JobModel
+
 
 class MySQLPipeline(object):
     """
         save the data to MySQL.
     """
 
-    def __init__(self, mysql_uri, mysql_port, mysql_db, mysql_user, mysql_passwd):
+    def __init__(self,
+                 mysql_uri,
+                 mysql_port,
+                 mysql_db,
+                 mysql_user,
+                 mysql_passwd):
         self.mysql_uri = mysql_uri
         self.mysql_port = mysql_port
         self.mysql_db = mysql_db
@@ -61,12 +64,6 @@ class MySQLPipeline(object):
     def process_item(self, item, spider):
         mysqlItem = dict()
         allowFields = JobModel.__dict__
-        # allowFields = ['city', 'salary', 'positionName', 'minWorkYear', 'maxWorkYear', 'companyName',\
-        #                  'companyLogo', 'companySize', 'industryField', 'financeStage', 'website' \
-        #                  'jobNature', 'createTime', 'positionType', 'positionAdvantage', 'positionFirstType',\
-        #                  'jobDescription', 'workTime', 'minWorkYear', 'maxWorkYear', 'education', 'positionId', \
-        #                  'originUrl', 'fromWhich'
-        #     ]
         for key in item.keys():
             if key in allowFields:
                 mysqlItem[key] = item[key]
@@ -92,9 +89,10 @@ class MySQLPipeline(object):
         mysqlItem['maxWorkYear'] = maxWorkYear
 
         try:
-            DBSession.query(JobModel).filter( \
-                and_(JobModel.positionId == positionId, JobModel.fromWhich == fromWhich)).delete()
-
+            DBSession.query(JobModel).filter(
+                JobModel.positionId == positionId
+                and JobModel.fromWhich == fromWhich
+            ).delete()
             DBSession.add(JobModel(**mysqlItem))
             DBSession.commit()
         except:

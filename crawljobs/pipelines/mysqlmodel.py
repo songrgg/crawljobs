@@ -1,6 +1,3 @@
-from contextlib import contextmanager
-
-from sqlalchemy.engine import create_engine
 from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy.orm.scoping import scoped_session
 from sqlalchemy.orm.session import sessionmaker
@@ -8,8 +5,10 @@ from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Text
 import datetime
 
+
 DBSession = scoped_session(sessionmaker())
 Base = declarative_base()
+
 
 class JobModel(Base):
     __tablename__ = 'jobs'
@@ -25,7 +24,9 @@ class JobModel(Base):
 
     salary = Column(String(30), nullable=False)
     jobNature = Column(String(50))
-    createTime = Column(DateTime, default=datetime.datetime.now, nullable=False)
+    createTime = Column(DateTime,
+                        default=datetime.datetime.now,
+                        nullable=False)
     positionName = Column(String(30), nullable=False)
     positionType = Column(String(30))
     positionAdvantage = Column(Text)

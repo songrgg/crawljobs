@@ -1,9 +1,8 @@
-#!/usr/bin/python
-#-*-coding:utf-8-*-
+# coding: utf-8
 
 from pymongo import MongoClient
 from scrapy import log
-from crawljobs.config.constants import JobSources
+
 
 class SingleMongodbPipeline(object):
     """
