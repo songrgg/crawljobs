@@ -46,12 +46,10 @@ class MySQLPipeline(object):
                 )
             )
 
-            log.msg("connect to [mysql+pymysql://%s:%s@%s/%s?charset=utf8]" %
-                (
+            log.msg("connect to [mysql+pymysql://%s:%s@%s/%s?charset=utf8]" % (
                     self.mysql_user, self.mysql_passwd,
-                    self.mysql_uri, self.mysql_db
-                ),
-                level=log.INFO, spider=spider)
+                    self.mysql_uri, self.mysql_db),
+                    level=log.INFO, spider=spider)
 
             DBSession.configure(bind=engine)
             Base.metadata.bind = engine
@@ -90,14 +88,15 @@ class MySQLPipeline(object):
 
         try:
             DBSession.query(JobModel).filter(
-                JobModel.positionId == positionId
-                and JobModel.fromWhich == fromWhich
+                JobModel.positionId == positionId and
+                JobModel.fromWhich == fromWhich
             ).delete()
             DBSession.add(JobModel(**mysqlItem))
             DBSession.commit()
         except:
             e = sys.exc_info()[0]
-            log.msg("Failed to store: %s" % json.dumps(mysqlItem), level=log.ERROR, spider=spider)
+            log.msg("Failed to store: %s" % json.dumps(mysqlItem),
+                    level=log.ERROR, spider=spider)
             DBSession.rollback()
         finally:
             log.msg("Job [`%s` from `%s`] wrote to MySQL table %s" %

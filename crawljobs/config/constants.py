@@ -1,5 +1,5 @@
-#!/usr/bin/python
-#-*-coding:utf-8-*-
+# -*-coding:utf-8-*-
+
 
 class JobSources(object):
     LAGOU = 'lagou,拉勾'

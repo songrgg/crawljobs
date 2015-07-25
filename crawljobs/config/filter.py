@@ -1,7 +1,7 @@
-#!/usr/bin/python
-#-*-coding:utf-8-*-
+# -*-coding:utf-8-*-
 
 from scrapy.dupefilters import RFPDupeFilter
+
 
 class CustomURLFilter(RFPDupeFilter):
 
