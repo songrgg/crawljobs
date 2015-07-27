@@ -102,4 +102,14 @@ MYSQL_USER = "root"
 MYSQL_PASSWD = "yongwu"
 
 # Add a custom filter passing the json-API url
-DUPEFILTER_CLASS = 'crawljobs.config.filter.CustomURLFilter'
+# DUPEFILTER_CLASS = 'crawljobs.config.filter.CustomURLFilter'
+DUPEFILTER_CLASS = 'crawljobs.config.filter.RedisURLFilter'
+
+# Add a queue based on redis
+SCHEDULER = 'crawljobs.schedule.redisshed.RedisShed'
+SCHEDULER_REDIS_QUEUE = 'crawljobs.schedule.redisqueue.PriorityQueue'
+DEPTH_PRIORITY = 0
+
+# Schedule redis
+REDIS_HOST = 'yongwuapi_redis_1'
+REDIS_PORT = 6379

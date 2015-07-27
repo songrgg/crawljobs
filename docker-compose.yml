@@ -1,8 +1,9 @@
 scrapy:
   build: .
-  # command: /bin/bash -c "while true; do echo hello; sleep 1; done"
-  command: scrapy crawl lagou
+  command: /bin/bash -c "while true; do echo hello; sleep 10; done"
+  # command: scrapy crawl lagou
   volumes:
     - .:/usr/src/app
   external_links:
     - yongwuapi_mysql_1
+    - yongwuapi_redis_1

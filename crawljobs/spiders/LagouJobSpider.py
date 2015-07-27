@@ -3,8 +3,10 @@
 import scrapy
 import json
 import re
+import time
 from crawljobs import items
 from crawljobs.config import constants
+
 
 class LagouJobSpider(scrapy.Spider):
 
@@ -15,16 +17,18 @@ class LagouJobSpider(scrapy.Spider):
     ]
 
     patterns = {
-        'lagou_job_detail': re.compile(r'^http://www\.lagou\.com/jobs/\d+\.html$')
+        'lagou_job_detail':
+            re.compile(r'^http://www\.lagou\.com/jobs/\d+\.html$')
     }
 
     def start_requests(self):
+        time.sleep(1)
         init_request = scrapy.http.FormRequest(
             url=self.start_urls[0],
             formdata={
-                'pn':'1',
-                'first':'false',
-                'kd':''
+                'pn': '1',
+                'first': 'false',
+                'kd': ''
             },
             callback=self.parse)
 
@@ -40,7 +44,8 @@ class LagouJobSpider(scrapy.Spider):
             detail_urls = self.processJson(jsonArr)
             for detail_url in detail_urls:
                 next_url = detail_url.get('url')
-                request = scrapy.http.Request(next_url, callback=self.processDetail)
+                request = scrapy.http.Request(next_url,
+                                              callback=self.processDetail)
                 request.meta['position'] = detail_url.get('position')
                 yield request
 
@@ -62,7 +67,8 @@ class LagouJobSpider(scrapy.Spider):
             else:
                 self.log('No more jobs~~')
 
-    # process the json object from `http://www.lagou.com/jobs/positionAjax.json?px=new`
+    # process the json object from `http://www.lagou.com/jobs/positionAjax.json
+    # ?px=new`
     def processJson(self, json):
         """
         {
@@ -86,22 +92,22 @@ class LagouJobSpider(scrapy.Spider):
                             "\u5e74\u5ea6\u65c5\u6e38",
                             "\u9886\u5bfc\u597d"
                         ],
-                        "companyLogo": "image1/M00/30/0E/Cgo8PFWFi62AQWBeAABBiADh0W4407.png?cc=0.04744642600417137",
+                        "companyLogo": "",
                         "companyName": "\u7384\u4eab",
-                        "companyShortName": "\u4e0a\u6d77\u7384\u4eab\u4fe1\u606f\u79d1\u6280\u6709\u9650\u516c\u53f8",
+                        "companyShortName": "",
                         "companySize": "15-50\u4eba",
                         "countAdjusted": false,
                         "createTime": "2015-06-20 23:55:18.0",
                         "createTimeSort": 1434815718000,
                         "education": "\u5b66\u5386\u4e0d\u9650",
-                        "financeStage": "\u521d\u521b\u578b(\u672a\u878d\u8d44)",
+                        "financeStage": "",
                         "formatCreateTime": "23:55\u53d1\u5e03",
                         "haveDeliver": false,
-                        "industryField": "\u79fb\u52a8\u4e92\u8054\u7f51 \u00b7 \u6570\u636e\u670d\u52a1",
+                        "industryField": "",
                         "jobNature": "\u5168\u804c",
                         "leaderName": "\u6682\u6ca1\u6709\u586b\u5199",
                         "orderBy": 150,
-                        "positionAdvantage": "\u89c6\u80fd\u529b\u800c\u5b9a\uff0c\u85aa\u6c34\u9ad8\u4e8e\u5e02\u573a\u4ef7\u683c",
+                        "positionAdvantage": "",
                         "positionFirstType": "\u6280\u672f",
                         "positionId": 810880,
                         "positionName": "Java",
@@ -132,17 +138,17 @@ class LagouJobSpider(scrapy.Spider):
         if ('success' in json and json['success']):
             self.log('---jsonApi return success')
             content = json.get('content')
-            if (content != ''):                
+            if (content != ''):
                 positions = content.get('result')
 
                 detail_urls = []
                 for position in positions:
                     positionId = position.get('positionId')
                     if (positionId > 0):
-                        detail_url = 'http://www.lagou.com/jobs/' + str(positionId) + '.html'
-                        # self.log('~~~start crawl ' + detail_url)
-                        # yield scrapy.http.Request(detail_url, callback=self.processDetail)
-                        detail_urls.append({ 'url': detail_url, 'position': position })
+                        detail_url = 'http://www.lagou.com/jobs/' +\
+                                    str(positionId) + '.html'
+                        detail_urls.append({'url': detail_url,
+                                            'position': position})
                     else:
                         self.log('###invalid position id')
                 return detail_urls
@@ -158,7 +164,8 @@ class LagouJobSpider(scrapy.Spider):
         self.log('---start job detail: ' + response.url)
         position = response.meta['position']
         jobDescription = response.xpath('//dd[@class="job_bt"]').extract()
-        website = response.xpath('//dl[@class="job_company"]/dd/ul/li/a/text()').extract()
+        website = response.xpath(
+            '//dl[@class="job_company"]/dd/ul/li/a/text()').extract()
 
         position['website'] = ','.join(website)
         position['originUrl'] = response.url
@@ -166,7 +173,7 @@ class LagouJobSpider(scrapy.Spider):
         position['jobDescription'] = ','.join(jobDescription)
 
         # transfer the dict to the JobItem
-        item = items.JobItem() 
+        item = items.JobItem()
         for key in position:
             try:
                 item[key] = position[key]
