@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 
 class RedisShed(Scheduler):
 
+    CRAWL_TIMES = 'crawl_times'
+
     def __init__(self, server, rqclass, next_urls_queue_key,
                  crawled_urls_queue_key,*args, **wargs):
         super(RedisShed, self).__init__(*args, **wargs)
@@ -71,6 +73,10 @@ class RedisShed(Scheduler):
         if request:
             self.stats.inc_value('scheduler/dequeued/redis',
                                  spider=self.spider)
+            if RedisShed.CRAWL_TIMES in request.meta:
+                request.meta[RedisShed.CRAWL_TIMES] += 1
+            else:
+                request.meta[RedisShed.CRAWL_TIMES] = 1
             self.crawled_urls_rqs.push(request)
         return request
 
