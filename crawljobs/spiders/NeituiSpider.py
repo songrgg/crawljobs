@@ -35,7 +35,7 @@ class NeituiSpider(scrapy.Spider):
 
         next_link = "http://www.neitui.me/neitui/page=%d.html" % \
             (self.cur_page+1)
-        self.cur_page = self.cur_page + 1
+        self.cur_page += 1
         self.log('go to next page: %s' % next_link)
         yield scrapy.http.Request(url=next_link, callback=self.parse)
 

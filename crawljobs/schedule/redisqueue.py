@@ -1,4 +1,5 @@
 # -*-coding:utf-8-*-
+import time
 from scrapy.utils.reqser import request_to_dict, request_from_dict
 try:
     import cPickle as pickle
@@ -71,3 +72,20 @@ class PriorityQueue(Base):
         results, count = pipe.execute()
         if results:
             return self._decode_request(results[0])
+
+
+class CrawledUrlsQueue(Base):
+    """A queue for crawled url sets, each url has a timestamp
+    """
+
+    def __len__(self):
+        pass
+
+    def push(self, request):
+        """Push a request with a timestamp"""
+        data = self._encode_request(request)
+        pairs = {data: time.time()}
+        self.server.zadd(self.key, **pairs)
+
+    def pop(self):
+        pass
