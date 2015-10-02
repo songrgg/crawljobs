@@ -1,8 +1,6 @@
 # -*-coding:utf-8-*-
-
 import redis
 import logging
-
 from crawljobs.schedule.redisqueue import CrawledUrlsQueue
 from scrapy.utils.misc import load_object
 from scrapy.utils.job import job_dir

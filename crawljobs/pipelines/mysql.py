@@ -1,10 +1,9 @@
 # coding: utf-8
 
 import re
-import sys
 import json
-from scrapy import log
-from sqlalchemy import and_
+import logging
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.engine import create_engine
 from .mysqlmodel import DBSession, Base, JobModel
 
@@ -46,10 +45,11 @@ class MySQLPipeline(object):
                 )
             )
 
-            log.msg("connect to [mysql+pymysql://%s:%s@%s/%s?charset=utf8]" % (
-                    self.mysql_user, self.mysql_passwd,
-                    self.mysql_uri, self.mysql_db),
-                    level=log.INFO, spider=spider)
+            logging.info("connect to [mysql+pymysql://%s:%s@%s/%s?charset=utf8]" %
+                         (
+                            self.mysql_user, self.mysql_passwd,
+                            self.mysql_uri, self.mysql_db
+                         ))
 
             DBSession.configure(bind=engine)
             Base.metadata.bind = engine
@@ -93,14 +93,12 @@ class MySQLPipeline(object):
             ).delete()
             DBSession.add(JobModel(**mysqlItem))
             DBSession.commit()
-        except:
-            e = sys.exc_info()[0]
-            log.msg("Failed to store: %s" % json.dumps(mysqlItem),
-                    level=log.ERROR, spider=spider)
+        except SQLAlchemyError:
+            # e = sys.exc_info()[0]
+            logging.error("Failed to store: %s" % json.dumps(mysqlItem))
             DBSession.rollback()
         finally:
-            log.msg("Job [`%s` from `%s`] wrote to MySQL table %s" %
-                    (positionId, fromWhich, self.mysql_db),
-                    level=log.DEBUG, spider=spider)
+            logging.debug("Job [`%s` from `%s`] wrote to MySQL table %s" %
+                (positionId, fromWhich, self.mysql_db))
 
         return item
