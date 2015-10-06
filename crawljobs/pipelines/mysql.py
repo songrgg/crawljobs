@@ -93,12 +93,11 @@ class MySQLPipeline(object):
             ).delete()
             DBSession.add(JobModel(**mysqlItem))
             DBSession.commit()
+            logging.debug("Job [`%s` from `%s`] written to MySQL" %
+                (positionId, fromWhich))
         except SQLAlchemyError:
             # e = sys.exc_info()[0]
             logging.error("Failed to store: %s" % json.dumps(mysqlItem))
             DBSession.rollback()
-        finally:
-            logging.debug("Job [`%s` from `%s`] wrote to MySQL table %s" %
-                (positionId, fromWhich, self.mysql_db))
 
         return item

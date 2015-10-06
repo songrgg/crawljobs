@@ -44,7 +44,7 @@ class Base(object):
 
     def clear(self):
         """Clear queue/stack"""
-        self.server.delete(self.key)
+        # self.server.delete(self.key)
 
 
 class PriorityQueue(Base):

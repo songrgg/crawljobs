@@ -44,4 +44,4 @@ class RedisURLFilter(BaseDupeFilter):
 
     def clear(self):
         """Clears fingerprints data"""
-        self.server.delete(self.key)
+        # self.server.delete(self.key)
