@@ -1,7 +1,7 @@
 # coding: utf-8
 
+import logging
 from pymongo import MongoClient
-from scrapy import log
 
 
 class SingleMongodbPipeline(object):
@@ -31,7 +31,7 @@ class SingleMongodbPipeline(object):
             self.client = MongoClient(self.mongo_uri, self.mongo_port)
             self.db = self.client[self.mongo_db]
         except Exception as e:
-            print "Catch Exception when [SingleMongodbPipeline]: %s" % str(e)
+            logging.error("Catch Exception when [SingleMongodbPipeline]: %s" % str(e))
 
     def close_spider(self, spider):
         self.client.close()
@@ -45,25 +45,19 @@ class SingleMongodbPipeline(object):
 
         condition = {'positionId': positionId, 'fromWhich': fromWhich}
         cursor = self.db['job_info'].find(condition)
-        result = False
         if (cursor.count() > 0):
             # update this record
-            # self.db['job_info'].delete_many(condition)
-            # result = self.db['job_info'].insert_one(item)
             self.db['job_info'].update_one(
                 condition,
                 {
                     '$set': mongoItem
                 }
             )
-            # log.msg("update %d from %s successfully" %
-            #         (positionId, fromWhich),
-            #         level=log.DEBUG, spider=spider)
+            logging.info("Update %d from %s successfully" %
+                    (positionId, fromWhich))
         else:
             # insert new record into db
             result = self.db['job_info'].insert_one(mongoItem)
-            log.msg("Item %s wrote to MongoDB database %s/job_info" %
-                    (result, self.MONGO_DB),
-                    level=log.DEBUG, spider=spider)
-
+            logging.info("Item %s wrote to MongoDB database %s/job_info" %
+                    (result, self.MONGO_DB))
         return item

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import re
-import json
 import string
 import datetime
+
 import scrapy
-from crawljobs.items import JobItem
-from crawljobs.config import constants
+
+from crawljobs.models.items import JobItem
 
 
 class NeituiSpider(scrapy.Spider):
